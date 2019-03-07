@@ -1,3 +1,10 @@
+# Image Processing
+The project experiments with
+• text and image features,
+• vector models, and
+• similarity/distance measures
+##### Not meant to be Copied
+
 This is the main readme file. Please follow everything written in this and individual readme files (for each packages) for smooth merging of code.
 
 **Getting Started**
