@@ -1,4 +1,4 @@
-# Image Processing
+# Image Processing Advanced
 The project experiments with
 • text and image features,
 • vector models, and
