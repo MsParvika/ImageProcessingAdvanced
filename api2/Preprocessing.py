@@ -15,39 +15,38 @@ k = int(config['PREPROCESSING']['k'])
 run_task_2 = bool(int(config['PREPROCESSING']['run_task_2']))
 
 # imageId to Index
-IdsIdxMap = {};
+IdsIdxMap = {}
 
 # Index to Image Id
-IdxIdsMap = {};
+IdxIdsMap = {}
 
-ImageWordTfIdfMap = {};
-
+ImageWordTfIdfMap = {}
 
 def readFromCSVTD(fileName):
     with open(fileName, "r", encoding="utf8") as ins:
-        i = 0;
-        w = 1;
+        i = 0
+        w = 1
         for line in ins:
-            row = line.split(' ');
+            row = line.split(' ')
             wordTfIdfMap = {};
             for j in range(len(row)):
                 if(j==0):
-                    IdsIdxMap[row[j]]=i;
-                    IdxIdsMap[i]=row[j];
-                    ImageWordTfIdfMap[row[j]]=wordTfIdfMap;
+                    IdsIdxMap[row[j]]=i
+                    IdxIdsMap[i]=row[j]
+                    ImageWordTfIdfMap[row[j]]=wordTfIdfMap
                     continue
                 if(row[j].find('"')!= -1):
-                    key = row[j].replace('"', '');
-                    wordTfIdfMap[key] = float(row[j+3]);
-            i = i +1;
+                    key = row[j].replace('"', '')
+                    wordTfIdfMap[key] = float(row[j+3])
+            i = i +1
     return ImageWordTfIdfMap
 
 image_file = config['PREPROCESSING']['raw_image_path']
 readFromCSVTD(image_file);
 
-hp.save(IdsIdxMap, "IdsIdxMap.txt");
+hp.save(IdsIdxMap, "IdsIdxMap.txt")
 IdsIdxMap = {};
-hp.save(IdxIdsMap, "IdxIdsMap.txt");
+hp.save(IdxIdsMap, "IdxIdsMap.txt")
 IdxIdsMap = {};
 
 cosineBoolean = {}
@@ -56,14 +55,14 @@ cosineBoolean = {}
 def findCosineSimilarity(key1, map1, key2, map2):
 
     if len(map1) > len(map2):
-        tempKey = key1;
-        key1 = key2;
-        key2 = tempKey;
-        tempMap = map1;
-        map1 = map2;
-        map2 = tempMap;
+        tempKey = key1
+        key1 = key2
+        key2 = tempKey
+        tempMap = map1
+        map1 = map2
+        map2 = tempMap
     try:
-        return cosineBoolean[key1+key2];
+        return cosineBoolean[key1+key2]
     except KeyError:
         dot_prod = 0;
         for key, value in map1.items():
@@ -72,10 +71,10 @@ def findCosineSimilarity(key1, map1, key2, map2):
                 value1 = map2[key]
             except KeyError:
                 continue
-            prod = value1 * value;
-            dot_prod = dot_prod + prod;
-        cosineBoolean[key1 + key2] = dot_prod / (len(map1) + len(map2));
-        return cosineBoolean[key1 + key2];
+            prod = value1 * value
+            dot_prod = dot_prod + prod
+        cosineBoolean[key1 + key2] = dot_prod / (len(map1) + len(map2))
+        return cosineBoolean[key1 + key2]
 
 ImageImageSimilarityMatrix = {}
 
@@ -83,62 +82,62 @@ if not run_task_2:
     i = 0;
     for key, value in ImageWordTfIdfMap.items():
         if i % 20 == 0:
-            print(i);
+            print(i)
         try:
-            q = ImageImageSimilarityMatrix[key];
+            q = ImageImageSimilarityMatrix[key]
         except KeyError:
             q = OrderedDict();
         ImageImageSimilarityMatrix[key] = q;
         for key1, value1 in ImageWordTfIdfMap.items():
             try:
-                q1 = ImageImageSimilarityMatrix[key1];
+                q1 = ImageImageSimilarityMatrix[key1]
             except KeyError:
                 q1 = OrderedDict();
-            ImageImageSimilarityMatrix[key1] = q1;
+            ImageImageSimilarityMatrix[key1] = q1
             csValue = findCosineSimilarity(key, value, key1, value1);
 
             if (key1 in q):
-                pass;
+                pass
             else:
                 q[key1] = csValue;
 
             if (key in q1):
-                pass;
+                pass
             else:
                 q1[key] = csValue;
 
-            q = OrderedDict(sorted(q.items(), key=lambda kv: kv[1], reverse=True));
-            q1 = OrderedDict(sorted(q1.items(), key=lambda kv: kv[1], reverse=True));
+            q = OrderedDict(sorted(q.items(), key=lambda kv: kv[1], reverse=True))
+            q1 = OrderedDict(sorted(q1.items(), key=lambda kv: kv[1], reverse=True))
             if(len(q) > k ):
                 for x in list(reversed(list(q))):
-                    q.pop(x);
-                    break;
+                    q.pop(x)
+                    break
             if (len(q1) > k):
                 for x in list(reversed(list(q1))):
-                    q1.pop(x);
-                    break;
-            ImageImageSimilarityMatrix[key] = q;
-            ImageImageSimilarityMatrix[key1] = q1;
-        i = i + 1;
-    cosineBoolean = {};
+                    q1.pop(x)
+                    break
+            ImageImageSimilarityMatrix[key] = q
+            ImageImageSimilarityMatrix[key1] = q1
+        i = i + 1
+    cosineBoolean = {}
 
-    hp.save(ImageImageSimilarityMatrix, "ImageImageSimilarityMatrix"+ str(k) +".txt");
+    hp.save(ImageImageSimilarityMatrix, "ImageImageSimilarityMatrix"+ str(k) +".txt")
 
 def pre_process_task2():
 
     # imageId to Index
-    IdsIdxMap = hp.load("IdsIdxMap.txt");
+    IdsIdxMap = hp.load("IdsIdxMap.txt")
 
     # Index to Image Id
-    IdxIdsMap = hp.load("IdxIdsMap.txt");
-    b = hp.load("ImageImageSimilarityMatrix"+ str(k) +".txt");
+    IdxIdsMap = hp.load("IdxIdsMap.txt")
+    b = hp.load("ImageImageSimilarityMatrix"+ str(k) +".txt")
 
     #adjecenty matrix
-    adj_matrix = np.zeros((len(IdxIdsMap), len(IdxIdsMap)));
+    adj_matrix = np.zeros((len(IdxIdsMap), len(IdxIdsMap)))
     weighted_adj_matrix = np.zeros((len(IdxIdsMap), len(IdxIdsMap)))
 
     for i in range(0, len(adj_matrix)):
-        q = b[IdxIdsMap[i]];
+        q = b[IdxIdsMap[i]]
         for value in q:
             adj_matrix[i][IdsIdxMap[value]] = 1.0;
             weighted_adj_matrix[i][IdsIdxMap[value]] = q[value]
