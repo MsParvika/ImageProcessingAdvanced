@@ -1,5 +1,5 @@
-from collections import OrderedDict;
-import helpers as hp;
+from collections import OrderedDict
+import helpers as hp
 import configparser as cp
 import os
 import scipy.sparse
