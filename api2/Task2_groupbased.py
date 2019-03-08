@@ -1,19 +1,14 @@
-#Python 3.x
-import time
 import numpy as np
 import networkx as nx
 from src import get_img_data_for_2 as gi
 import configparser as cp
-from src import visualize as vis
-from src import Helper as hp;
-from src import LocationMapping as LM
+import Visualize as vis
+import Helper as hp
+import LocationMapping as LM
 import os
 
-start = time.time()
 
 image_ids,imgs,cos_img,sorted_k = gi.get_data()
-
-print ("Time elapsed in fetching image data "+str(time.time()-start))
 
 k = input("Enter the number of nearest neighbours ")
 k = int(k)
@@ -26,8 +21,6 @@ for ii in range(sorted_k.shape[0]):
     for jj in range(k+1):
         # G.add_weighted_edges_from([(ii,sorted_k[ii][jj],cos_img[ii][int(sorted_k[ii][jj])])])
         G.add_edge(ii,sorted_k[ii][jj])
-
-print ("Time elapsed after Graph generation-- "+str(time.time()-start))
 
 c = input("Enter the number of clusters required ")
 c = int(c)
@@ -134,19 +127,11 @@ for keys in sorted_dist_dict:
         rep_node_dict[str(keys)]=temp
 
 
-print ("Time elapsed after clustering "+str(time.time()-start))  
-
 print("Cluster representatives are as follows: "+str(cluster_reps))
-
-a = True
 
 for key,value in rep_node_dict.items():
         for jj in range(len(rep_node_dict[key])):
             rep_node_dict[key][jj] = idx2id[rep_node_dict[key][jj]]
-
-
-
-# print('Last image location is '+str(img2loc[idx2id[cos_img.shape[0]-1]]))
-
-vis.showclusters(rep_node_dict,dpath,a)
+            
+vis.showclusters(rep_node_dict,dpath, True)
 
