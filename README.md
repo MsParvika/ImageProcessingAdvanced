@@ -3,27 +3,30 @@ The project experiments with
 • text and image features,
 • vector models, and
 • similarity/distance measures
-##### Not meant to be Copied
+##### { Not meant to be Copied }
 
 This is the main readme file. Please follow everything written in this and individual readme files (for each packages) for smooth merging of code.
 
 **Getting Started**
+```
 Open a terminal. Browse into Project directory - Image Processing.
 Copy Data set into the current directory.
 Install redis - https://redis.io/topics/quickstart
 Run setup.py file
 To run the project:
-·   	For Windows: Type "Main.py"
-·   	For Mac and Linux: Type "python ./Main.py"
+- For Windows: Type "Main.py"
+- For Mac and Linux: Type "python ./Main.py"
 The code is divided into 3 sections - api, config and lib
 Api - contains all the API for tasks 1 to 7
+Api2 - Contains all the API2 for tasks 1 to 6
 Config - all the hard-coded file paths/names are written in this
 Lib - all the packages reside in this directory
+```
 
 **Project Structure**
 Math.py file in lib folder:
 This python file contains the mathematical operation which we are going to use throughout the entire phase.
-It contains separate functions for SVD, PCA, and LDA which take a matrix and the value of k (number of latent semantics) as its parameters and returns the diagonal matrix of eigenvalues. For SVD, we have used the TruncatedSVD since it works well for sparse matrix and does not center the data before computation.
+It contains separate functions for SVD, PCA, LSH, Page Rank, PPR and LDA which take a matrix and the value of k (number of latent semantics) as its parameters and returns the diagonal matrix of eigenvalues. For SVD, we have used the TruncatedSVD since it works well for sparse matrix and does not center the data before computation.
 We have the functions for finding out the similarity between two vectors in the form of Euclidean distance and Cosine similarity where we are passing the 2 vectors as parameters.
 Lastly, we also have functions for scalar product / inner product for 2 vectors and for finding out the norm/ length of the vector.
 
@@ -36,7 +39,7 @@ I briefly describe the function of each file/folder
 
 	1. main.py - this will be the runner script that will call APIs
 	2. setup.py - perform startup tasks. no need to worry about this yet, leave it empty
-	3. api - contains all task classes and a helper class. refer to package readme for details
+	3. api/2 - contains all task classes and a helper class. refer to package readme for details
 	4. config - contains app-wide config as ini file and a parser class to query it
 	5. data - directory to story any raw files(like devset). should be in .gitignore
 	6. lib - contains all libraries for db, file, cache, math. refer to package readme for details
