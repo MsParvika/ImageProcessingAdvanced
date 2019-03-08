@@ -1,12 +1,11 @@
-#Python 3.x
-from src import Helper
+import helpers
 import numpy as np
 import scipy
 import scipy.sparse
 import sys
 import math
 import configparser as cp
-from src import visualize as vis
+import Visualize as vis
 import os
 
 def findclusters(U,cluster_center_vectors):
@@ -56,7 +55,6 @@ def sort_closest_first(U,clist,cluster_center_vectors):
 
 
 def main():
-    # adj = (scipy.sparse.load_npz('adjency.npz')).todense()
     ip = input('Please enter the nearest neighbors k -- ')
 
     if sys.argv[1]=='U':
@@ -123,7 +121,6 @@ def main():
 
     a = True
     vis.showclusters(cluster_dict,dpath)
-
 
 if __name__ == '__main__':
     main()
