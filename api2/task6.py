@@ -1,17 +1,17 @@
 from operator import itemgetter
-from src import Helper as hp
-from src import SpareMatrixPR as SMPR
-from collections import OrderedDict;
-from src import visualize  as vis
+import helpers as hp
+import SpareMatrixPR as SMPR
+from collections import OrderedDict
+import Visualize  as vis
 import configparser as cp
 import os
 
 config = cp.ConfigParser()
 config.read(os.getcwd()+'/config.ini')
-image_textual_descriptor_fileName = config['TASK6']['raw_image_path'];
+image_textual_descriptor_fileName = config['TASK6']['raw_image_path']
 
 def make_dictionary():
-    file_object=open(image_textual_descriptor_fileName, encoding="utf8");
+    file_object=open(image_textual_descriptor_fileName, encoding="utf8")
 
     #reading the entire txt file line by line
     content= file_object.readlines()
@@ -77,10 +77,10 @@ def cosine_similarity_task_6(imgA,imgB):
 adj_matrix = hp.load("adj_matrix.txt")
 
 # imageId to Index
-IdsIdxMap = hp.load("IdsIdxMap.txt");
+IdsIdxMap = hp.load("IdsIdxMap.txt")
 
 # Index to Image Id
-IdxIdsMap = hp.load("IdxIdsMap.txt");
+IdxIdsMap = hp.load("IdxIdsMap.txt")
 
 
 img_dict = make_dictionary()
